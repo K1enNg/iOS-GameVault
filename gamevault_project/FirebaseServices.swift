@@ -11,32 +11,17 @@ import FirebaseFirestore
 class FirebaseServices {
     private let db = Firestore.firestore()
 
-    func addUser(_ username: String, _ password: String, _ email: String) -> Bool{
-        let id = UUID().uuidString
-        let newUser = User(id: id, username: username, email: email, password: password)
+    func addUser(_ id: String,_ username: String, _ email: String){
+        let newUser = User(id: id, username: username, email: email)
         do {
             try db.collection("Users").document(newUser.id).setData(from: newUser)
             print("User Successfully Added!")
-            return true;
         }
         catch {
             print("Error saving user: \(error.localizedDescription)")
-            return false;
         }
     }
     
-    func validateUser(_ username: String, _ password: String) async -> Bool {
-        let user = await getUserByUsername(username)
-        if(user == nil){
-            return false;
-        }
-        else {
-            if (user?.password == password) {
-                return true;
-            }
-        }
-        return false;
-    }
     
     func getUserByUsername(_ username: String) async -> User? {
         do {

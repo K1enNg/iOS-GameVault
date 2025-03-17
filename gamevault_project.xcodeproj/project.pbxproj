@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E04746F2D84B16F00FEF47D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9E04746E2D84B16F00FEF47D /* FirebaseAuth */; };
 		9E1B258E2D7B700400BE5F03 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E1B258D2D7B700400BE5F03 /* FirebaseCore */; };
 		9E1B25902D7B700400BE5F03 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E1B258F2D7B700400BE5F03 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E1B258E2D7B700400BE5F03 /* FirebaseCore in Frameworks */,
+				9E04746F2D84B16F00FEF47D /* FirebaseAuth in Frameworks */,
 				9E1B25902D7B700400BE5F03 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -40,6 +42,7 @@
 			isa = PBXGroup;
 			children = (
 				55C389BF2D5FBF1200F6B8BE /* gamevault_project */,
+				9E04746D2D84B16F00FEF47D /* Frameworks */,
 				55C389BE2D5FBF1200F6B8BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +53,13 @@
 				55C389BD2D5FBF1200F6B8BE /* gamevault_project.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9E04746D2D84B16F00FEF47D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,6 +84,7 @@
 			packageProductDependencies = (
 				9E1B258D2D7B700400BE5F03 /* FirebaseCore */,
 				9E1B258F2D7B700400BE5F03 /* FirebaseFirestore */,
+				9E04746E2D84B16F00FEF47D /* FirebaseAuth */,
 			);
 			productName = gamevault_project;
 			productReference = 55C389BD2D5FBF1200F6B8BE /* gamevault_project.app */;
@@ -264,6 +275,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"gamevault_project/Preview Content\"";
+				DEVELOPMENT_TEAM = RV96M429T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -292,6 +304,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"gamevault_project/Preview Content\"";
+				DEVELOPMENT_TEAM = RV96M429T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -347,6 +360,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9E04746E2D84B16F00FEF47D /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
 		9E1B258D2D7B700400BE5F03 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

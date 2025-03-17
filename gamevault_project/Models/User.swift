@@ -11,5 +11,4 @@ struct User: Codable, Identifiable {
     var id: String
     var username: String
     var email: String
-    var password: String
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SignUp: View {
     @State private var username: String = ""
@@ -30,15 +31,24 @@ struct SignUp: View {
                 SecureField("Enter your password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                
                 TextField("Enter your email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom, 20)
+                    .onChange (of: email){
+                       email = email.lowercased()
+                    }
             }
             
             Button (action: {
                 if(!username.isEmpty && !password.isEmpty && !email.isEmpty) {
-                    if firestoreService.addUser(username, password, email) == true {
+                    Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                        if let error = error {
+                            print("Error signing up: \(error.localizedDescription)")
+                            return
+                        }
+                        guard let uid = authResult?.user.uid else { return }
+                        
+                        firestoreService.addUser(uid, username, email)
                         nav2 = true
                     }
                 }

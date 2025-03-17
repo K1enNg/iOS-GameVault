@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+import FirebaseFirestore
+import FirebaseAuth
+
 struct LogInView: View {
     @State private var username: String = ""
     @State private var password: String = ""
@@ -35,13 +38,19 @@ struct LogInView: View {
             Button (action: {
                 Task {
                     if(!username.isEmpty && !password.isEmpty) {
-                        let isValid = await firestoreService.validateUser(username, password)
-                        if isValid == true {
-                            nav2 = true
-                            currentUsername = username
-                        }
-                        else {
-                            print("Invalid credentials!")
+                        
+                        let user = await firestoreService.getUserByUsername(username)
+                        if let email = user?.email {
+                            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+                                
+                                if let error = error {
+                                    print("Error logging in: \(error.localizedDescription)")
+                                    return
+                                }
+                                print("User signed in successfully!")
+                                currentUsername = username
+                                nav2 = true
+                            }
                         }
                     }
                     else{
@@ -65,7 +74,7 @@ struct LogInView: View {
                     }
             }
             .fullScreenCover(isPresented: $nav2) {
-                ContentView()
+                AddGame()
             }
             
             HStack {

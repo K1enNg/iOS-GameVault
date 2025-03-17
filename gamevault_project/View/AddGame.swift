@@ -58,6 +58,13 @@ struct AddGame: View {
                     let id = UUID().uuidString
                     let game = Game(id: id, title: title, genre: genre, desc: desc, platform: platform, gameForm: gameForm, price: price, isNew: false, isUnfinished: false)
                     await firestoreService.addGame(currentUsername, game)
+                    title = ""
+                    genre = ""
+                    gameForm = ""
+                    platform = ""
+                    price = ""
+                    desc = ""
+                    
                     
                 }
             }) {
