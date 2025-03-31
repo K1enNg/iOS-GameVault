@@ -41,7 +41,8 @@ Game Class – Stores game details such as title, genre, platform, and rating.
 )
 
 
-## Authors
-Kien Nguyen
-Tran Ba Minh Huy
-Jhalil Danilo Roman Soria
+## Authors  
+- Kien Nguyen  
+- Tran Ba Minh Huy  
+- Jhalil Danilo Roman Soria  
+
