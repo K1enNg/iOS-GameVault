@@ -12,33 +12,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            
-            SignUp()
-//            TabView {
-//                AddGame()
-//                    .tabItem {
-//                        Image(systemName: "plus")
-//                        Text("Add Game")
-//                    }
-//                
-//                Text("Profile")
-//                    .tabItem {
-//                        Image(systemName: "person.circle")
-//                        Text("Profile")
-//                    }
-//                
-//                Text("Collection")
-//                    .tabItem {
-//                        Image(systemName: "list.bullet")
-//                        Text("Collection")
-//                    }
-//                
-//                Text("Noftifications")
-//                    .tabItem {
-//                        Image(systemName: "bell.badge.fill")
-//                        Text("Noftifications")
-//                    }
-//            }
+            LogInView()
         }
     }
 }

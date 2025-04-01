@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 class FirebaseServices {
     private let db = Firestore.firestore()
@@ -54,11 +55,10 @@ class FirebaseServices {
             try db.collection("Users")
                 .document(currentUser.id)
                 .collection("Games")
-                .document(game.genre)
-                .collection("\(game.genre)")
-                .document(game.title).setData(from: game)
-               
-            print("Game added successfully!")
+                .document(game.genres)
+                .collection("\(game.genres)")
+                .document(game.name).setData(from: game)
+                
         } catch {
             print("Error updating user: \(error.localizedDescription)")
         }

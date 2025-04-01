@@ -16,23 +16,64 @@ struct LogInView: View {
     private let firestoreService = FirebaseServices()
     @State private var nav = false
     @State private var nav2 = false
+    @State private var nav3 = false
     @AppStorage("currentUsername") var currentUsername: String = ""
     
     var body: some View {
         VStack {
-            VStack (alignment: .leading, spacing: 20) {
-                Text("Log In")
-                    .font(.largeTitle)
-                    .bold()
-                    .fontDesign(.monospaced)
-                    .padding(.bottom )
+            VStack (spacing: 20) {
+                Image("gameVaultLogo")
+                    .resizable()
+                    .scaledToFit()
                 
-                TextField("Enter your username", text: $username)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                SecureField("Enter your password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 20)
+                    Text("Already a memeber?")
+                    .font(.title)
+                        .bold()
+                        .fontDesign(.monospaced)
+                    Text("Log In")
+                    .font(.title)
+                        .bold()
+                        .fontDesign(.monospaced)
+                    
+                
+                
+                
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundColor(.gray.opacity(0.2))
+                    .frame(width: 370, height: 70)
+                    .overlay{
+                        TextField("Enter your username", text: $username)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .fontDesign(.monospaced)
+                            
+                    }
+                
+                
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundColor(.gray.opacity(0.2))
+                    .frame(width: 370, height: 70)
+                    .overlay{
+                        SecureField("Enter your password", text: $password)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .fontDesign(.monospaced)
+                    }
+                
+            }.padding()
+            
+            HStack{
+                Spacer()
+                Button (action : {
+                    nav3 = true
+                }) {
+                    Text("Forgot Password")
+                        .foregroundStyle(.blue)
+                        .fontDesign(.monospaced)
+                        .font(.subheadline)
+                }
+                .fullScreenCover(isPresented: $nav3) {
+                    ResetPassword()
+                }
             }
         
             Button (action: {
@@ -74,7 +115,7 @@ struct LogInView: View {
                     }
             }
             .fullScreenCover(isPresented: $nav2) {
-                AddGame()
+                HomePage()
             }
             
             HStack {

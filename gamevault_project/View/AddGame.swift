@@ -7,18 +7,18 @@
 
 import SwiftUI
 
+
 struct AddGame: View {
-    @State private var title: String = ""
+    @State private var name: String = ""
     @State private var genre: String = ""
     @State private var desc: String = ""
-    @State private var gameForm: String = ""
-    @State private var platform: String = ""
-    @State private var price: String = "";
+    @State private var publisher: String = ""
+    @State private var releaseDate: String = ""
+    @State private var rating: String = "";
+    @State private var fetchedGames: [Game] = []
     @AppStorage("currentUsername") var currentUsername: String = ""
-    
-    let forms : [String] = ["Digital", "Physical"]
-    
     private let firestoreService = FirebaseServices()
+    
 
     var body: some View {
         VStack {
@@ -27,63 +27,52 @@ struct AddGame: View {
                     .font(.largeTitle)
                     .bold()
                     .fontDesign(.monospaced)
-                    .padding(.bottom )
                 
-                TextField("Title", text: $title)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                TextField("Genre", text: $genre)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                Picker("Select the Game's Form", selection: $gameForm) {
-                    ForEach(forms, id: \.self) { form in
-                        Text(form)
+                HStack {
+                    TextField("Search Game", text: $name)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Button (action : {
+                        Task {
+                            await fetchGames()
+                        }
+                    }) {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.black)
+                            .frame(width: 45, height: 45)
+                            .overlay {
+                                Image(systemName: "magnifyingglass")
+                                    .font(.system(size: 20))
+                                    .bold(true)
+                                    .foregroundStyle(.white)
+                            }
                     }
                 }
-                .pickerStyle(.segmented)
-                
-                TextField("Platform", text: $platform)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                TextField("Price", text: $price)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                TextField("Description", text: $desc)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 20)
             }
             
-            Button (action : {
-                Task {
-                    let id = UUID().uuidString
-                    let game = Game(id: id, title: title, genre: genre, desc: desc, platform: platform, gameForm: gameForm, price: price, isNew: false, isUnfinished: false)
-                    await firestoreService.addGame(currentUsername, game)
-                    title = ""
-                    genre = ""
-                    gameForm = ""
-                    platform = ""
-                    price = ""
-                    desc = ""
-                    
-                    
-                }
-            }) {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.black)
-                    .frame(width: 350, height: 45)
-                    .overlay {
-                        Text("Add Game")
-                            .font(.title3)
-                            .fontDesign(.monospaced)
-                            .foregroundColor(.white)
-                            .bold()
-                    }
-            }
+            if !fetchedGames.isEmpty {
+               ScrollView {
+                   LazyVStack(spacing: 10) {
+                       ForEach(fetchedGames, id: \.id) { game in
+                           GameCard(obj: game)
+                           Divider()
+                       }
+                   }
+               }
+               .frame(maxHeight: 900)
+           }
             
-            
+            Spacer()
         }.padding()
     }
+    
+   func fetchGames() async {
+       let listID = await Games.fetchGame(withName: name)
+       let games = await GameAssemble.gameList(listID)
+       self.fetchedGames = games
+   }
 }
+
 
 #Preview {
     AddGame()
