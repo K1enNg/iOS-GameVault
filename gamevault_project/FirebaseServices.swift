@@ -30,7 +30,7 @@ class FirebaseServices {
                                             .whereField("username", isEqualTo: username)
                                             .getDocuments()
 
-            if querySnapshot.documents.isEmpty {
+            if (querySnapshot.documents.isEmpty) {
                 print("No user found with username: \(username)")
                 return nil
             }
@@ -52,15 +52,95 @@ class FirebaseServices {
                 return
             }
     
-            try db.collection("Users")
+            let ref =  db.collection("Users")
                 .document(currentUser.id)
                 .collection("Games")
-                .document(game.genres)
-                .collection("\(game.genres)")
-                .document(game.name).setData(from: game)
+                .document("\(game.genres)")
+            
+            try await ref.setData(["genreName": game.genres], merge: true)
+
+            try ref.collection("\(game.genres)")
+                   .document(game.name)
+                   .setData(from: game)
                 
         } catch {
-            print("Error updating user: \(error.localizedDescription)")
+            print("Error adding game: \(error.localizedDescription)")
+        }
+    }
+    
+    func displayGenres(_ username: String) async -> [String] {
+        do {
+            
+            guard let user = await getUserByUsername(username) else {
+                print("User not found")
+                return []
+            }
+            var genres: [String] = []
+            
+            let genresSnapshot = try await db.collection("Users")
+                .document(user.id)
+                .collection("Games")
+                .getDocuments()
+            
+            for genre in genresSnapshot.documents {
+                genres.append(genre.documentID)
+            }
+            
+            return genres
+        }
+        catch {
+            print("Error displaying game: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    func displayGames(_ username: String, _ sort: String) async -> [Game] {
+        do {
+            guard let currentUser = await getUserByUsername(username) else {
+                print("User not found")
+                return []
+            }
+            
+            var allGames: [Game] = []
+            
+            let genres = await displayGenres(username)
+            if (sort == "All") {
+                for genre in genres{
+                    let gameSnaphot = try await
+                        db.collection("Users")
+                        .document(currentUser.id)
+                        .collection("Games")
+                        .document("\(genre)")
+                        .collection("\(genre)")
+                        .getDocuments()
+                    
+                    let game = gameSnaphot.documents.compactMap { doc in
+                        try? doc.data(as: Game.self)
+                    }
+                   
+                    allGames.append(contentsOf: game)
+                }
+            }
+            else {
+                let gameSnaphot = try await
+                    db.collection("Users")
+                    .document(currentUser.id)
+                    .collection("Games")
+                    .document("\(sort)")
+                    .collection("\(sort)")
+                    .getDocuments()
+                
+                let game = gameSnaphot.documents.compactMap { doc in
+                    try? doc.data(as: Game.self)
+                }
+               
+                allGames.append(contentsOf: game)
+            }
+           return allGames
+            
+        } catch {
+            print("Error displaying game: \(error.localizedDescription)")
+            return []
         }
     }
 }

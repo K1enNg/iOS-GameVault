@@ -26,7 +26,6 @@ struct LogInView: View {
                     .resizable()
                     .scaledToFit()
                 
-                
                     Text("Already a memeber?")
                     .font(.title)
                         .bold()
@@ -35,28 +34,25 @@ struct LogInView: View {
                     .font(.title)
                         .bold()
                         .fontDesign(.monospaced)
-                    
                 
-                
-                
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.gray.opacity(0.2))
-                    .frame(width: 370, height: 70)
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.gray.opacity(0.15))
+                    .frame(width: 370, height: 60)
                     .overlay{
                         TextField("Enter your username", text: $username)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
-                            
+                            .padding(.leading)
                     }
                 
-                
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.gray.opacity(0.2))
-                    .frame(width: 370, height: 70)
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.gray.opacity(0.15))
+                    .frame(width: 370, height: 60)
                     .overlay{
                         SecureField("Enter your password", text: $password)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
+                            .padding(.leading)
                     }
                 
             }.padding()
@@ -115,7 +111,7 @@ struct LogInView: View {
                     }
             }
             .fullScreenCover(isPresented: $nav2) {
-                HomePage()
+                Home()
             }
             
             HStack {

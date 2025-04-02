@@ -50,18 +50,21 @@ struct AddGame: View {
                 }
             }
             
-            if !fetchedGames.isEmpty {
-               ScrollView {
-                   LazyVStack(spacing: 10) {
-                       ForEach(fetchedGames, id: \.id) { game in
-                           GameCard(obj: game)
-                           Divider()
-                       }
-                   }
-               }
-               .frame(maxHeight: 900)
-           }
-            
+            if (!fetchedGames.isEmpty) {
+                ScrollView {
+                    LazyVStack(spacing: 10) {
+                        ForEach(fetchedGames, id: \.id) { game in
+                            GameCard(obj: game)
+                            Divider()
+                        }
+                    }
+                }
+                .frame(maxHeight: 900)
+            }
+            else {
+                ProgressView("Loading results...")
+            }
+           
             Spacer()
         }.padding()
     }

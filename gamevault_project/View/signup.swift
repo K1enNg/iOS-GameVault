@@ -32,37 +32,37 @@ struct SignUp: View {
             VStack (alignment: .leading, spacing: 20){
                 
                 
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.gray.opacity(0.2))
-                    .frame(width: 370, height: 70)
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.gray.opacity(0.15))
+                    .frame(width: 370, height: 60)
                     .overlay{
                         TextField("Enter your username", text: $username)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
-                            
+                            .padding(.leading)
                     }
                     
                 
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.gray.opacity(0.2))
-                    .frame(width: 370, height: 70)
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.gray.opacity(0.15))
+                    .frame(width: 370, height: 60)
                     .overlay{
                         SecureField("Enter your password", text: $password)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
+                            .padding(.leading)
                     }
                 
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.gray.opacity(0.2))
-                    .frame(width: 370, height: 70)
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.gray.opacity(0.15))
+                    .frame(width: 370, height: 60)
                     .overlay{
                         TextField("Enter your email", text: $email)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
-                            .padding(.bottom, 20)
                             .onChange (of: email){
                                 email = email.lowercased()
-                            }
+                            }.padding(.leading)
                     }
             }
             
