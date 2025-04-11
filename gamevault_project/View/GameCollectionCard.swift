@@ -20,6 +20,8 @@ let model = Game(
 struct GameCollectionCard: View {
     var obj: Game
     private let firebase = FirebaseServices()
+    @State private var addtoFav = false
+    
     @AppStorage("currentUsername") var currentUsername: String = ""
     var body: some View {
         VStack {
@@ -47,25 +49,24 @@ struct GameCollectionCard: View {
                 }
                 
                 Spacer()
-                
-                Button (action : {
-                    Task {
-                        await firebase.addGame(currentUsername, obj)
-                    }
-                }) {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.black)
-                        .frame(width: 60, height: 45)
-                        .overlay {
-                            Text("Add")
-                                .bold(true)
-                                .foregroundStyle(.white)
-                                .fontDesign(.monospaced)
+            
+                    Toggle("",isOn: $addtoFav)
+                        .labelsHidden()
+                        .toggleStyle(SwitchToggleStyle(tint: .gold))
+                        .onChange(of: addtoFav) { newValue in
+                            Task {
+                                if newValue == true{
+                                    await firebase.addFav(currentUsername, obj)
+                                }
+                                else {
+                                    newValue == false
+                                    await firebase.removeFav(currentUsername, obj)
+                                }
+                            }
                         }
-                }
-
             }
-        }
+        }.padding()
+        .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
     }
 }
 

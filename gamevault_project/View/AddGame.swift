@@ -22,15 +22,23 @@ struct AddGame: View {
 
     var body: some View {
         VStack {
-            VStack (alignment: .leading, spacing: 20) {
-                Text("Add Game")
-                    .font(.largeTitle)
-                    .bold()
-                    .fontDesign(.monospaced)
+            VStack (spacing: 20) {
+                HStack{
+                    Text("Add Game")
+                        .font(.largeTitle)
+                        .bold()
+                        .fontDesign(.monospaced)
+                }
                 
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundColor(.gray.opacity(0.2))
+                    .frame(width: 380, height: 30)
+                    .overlay(
                 HStack {
                     TextField("Search Game", text: $name)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding()
+                    
                     
                     Button (action : {
                         Task {
@@ -39,7 +47,7 @@ struct AddGame: View {
                     }) {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.black)
-                            .frame(width: 45, height: 45)
+                            .frame(width: 35, height: 35)
                             .overlay {
                                 Image(systemName: "magnifyingglass")
                                     .font(.system(size: 20))
@@ -47,7 +55,7 @@ struct AddGame: View {
                                     .foregroundStyle(.white)
                             }
                     }
-                }
+                })
             }
             
             if (!fetchedGames.isEmpty) {
@@ -67,6 +75,7 @@ struct AddGame: View {
            
             Spacer()
         }.padding()
+            .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
     }
     
    func fetchGames() async {

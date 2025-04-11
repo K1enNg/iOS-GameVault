@@ -132,8 +132,13 @@ struct LogInView: View {
                     SignUp()
                 }
             }
+            
+            Spacer()
+            
         }.padding()
+            .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
     }
+        
 }
 
 

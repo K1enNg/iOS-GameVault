@@ -143,4 +143,51 @@ class FirebaseServices {
             return []
         }
     }
+    
+    func addFav(_ username: String, _ game: Game) async {
+        do {
+            guard let currentUser = await getUserByUsername(username) else {
+                print("User not found")
+                return
+            }
+    
+            let ref =  db.collection("Users")
+                .document(currentUser.id)
+                .collection("Games")
+                .document("Favorite")
+            
+            try await ref.setData(["genreName": game.genres], merge: true)
+
+            try ref.collection("Favorite")
+                   .document(game.name)
+                   .setData(from: game)
+                
+        } catch {
+            print("Error adding game: \(error.localizedDescription)")
+        }
+    }
+    
+    func removeFav(_ username: String, _ game: Game) async {
+        do {
+            guard let currentUser = await getUserByUsername(username) else {
+                print("User not found")
+                return
+            }
+    
+            let ref =  db.collection("Users")
+                .document(currentUser.id)
+                .collection("Games")
+                .document("Favorite")
+            
+            try await ref.setData(["genreName": game.genres], merge: true)
+
+            try await ref.collection("Favorite")
+                   .document(game.name)
+                   .delete()
+                
+        } catch {
+            print("Error adding game: \(error.localizedDescription)")
+        }
+    }
+    
 }

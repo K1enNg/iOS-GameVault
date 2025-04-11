@@ -10,6 +10,11 @@ import SwiftUI
 struct Home: View {
     var body: some View {
         TabView {
+            
+            HomePage().tabItem {
+                Label("Home Page", systemImage: "house")
+            }
+            
             AddGame()
                 .tabItem {
                     Label("Add Game", systemImage: "plus")
@@ -19,7 +24,9 @@ struct Home: View {
                 .tabItem {
                     Label("Collection", systemImage: "list.bullet")
                 }
-        }
+            
+                
+        }.background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
     }
 }
 

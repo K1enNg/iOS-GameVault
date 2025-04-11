@@ -18,18 +18,62 @@ struct GameCollection: View {
     var body: some View {
         NavigationStack {
             VStack {
-                VStack (alignment: .leading, spacing: 10){
+                
+                HStack(alignment: .center){
+                    Text("GameVault")
+                        .font(.title)
+                        .bold(true)
+                        .foregroundColor(.black)
+                    Image(systemName: "gamecontroller")
+                        .resizable()
+                        .frame(width: 40, height: 30)
+                        .foregroundColor(.black)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "qrcode.viewfinder")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.black)
+                }
+                
+                HStack{
+                    Spacer()
+                    
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(.gray.opacity(0.2))
+                        .frame(width: 380, height: 30)
+                        .overlay(
+                            HStack{
+                                
+                                Text("Search Collection")
+                                    .font(.body)
+                                    .multilineTextAlignment(.leading)
+                                    .foregroundColor(.gray)
+                                Spacer()
+                                Image(systemName: "magnifyingglass")
+                                    .resizable()
+                                    .foregroundColor(.gray)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 20)
+
+                            })
+                }
+                
+                HStack (){
                     Text("Game Collection")
                         .fontDesign(.monospaced)
                         .font(.title)
                         .bold(true)
                         .padding(.bottom)
                     
+                    Spacer()
                     Picker("Select Genre", selection: $selectedGenre) {
                         ForEach(genres, id: \.self) { genre in
                             Text(genre).tag(genre)
                         }
                     }
+                    .accentColor(.black)
                     .pickerStyle(MenuPickerStyle()) .onChange(of: selectedGenre) { _ in
                         Task { await getAllGames() }
                     }
@@ -57,6 +101,7 @@ struct GameCollection: View {
         .task{
             await getAllGames()
         }
+        .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
     }
 }
     
