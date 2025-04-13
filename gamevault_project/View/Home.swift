@@ -11,22 +11,23 @@ struct Home: View {
     var body: some View {
         TabView {
             
-            HomePage().tabItem {
-                Label("Home Page", systemImage: "house")
+            GameCollection()
+                .tabItem {
+                Label("Collection", systemImage: "list.bullet")
             }
             
             AddGame()
                 .tabItem {
-                    Label("Add Game", systemImage: "plus")
-                }
+                Label("Add Game", systemImage: "plus")
+            }
             
-            GameCollection()
+            HomePage()
                 .tabItem {
-                    Label("Collection", systemImage: "list.bullet")
-                }
-            
+                Label("Home Page", systemImage: "house")
+            }
                 
-        }.background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+        }.accentColor(.black)
+        
     }
 }
 

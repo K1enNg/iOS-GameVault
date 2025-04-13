@@ -23,7 +23,6 @@ class FirebaseServices {
         }
     }
     
-    
     func getUserByUsername(_ username: String) async -> User? {
         do {
             let querySnapshot = try await db.collection("Users")
@@ -85,7 +84,7 @@ class FirebaseServices {
             for genre in genresSnapshot.documents {
                 genres.append(genre.documentID)
             }
-            
+        
             return genres
         }
         catch {
@@ -103,7 +102,10 @@ class FirebaseServices {
             
             var allGames: [Game] = []
             
-            let genres = await displayGenres(username)
+            var genres = await displayGenres(username)
+            
+            genres = genres.filter { $0 != "Favorite" }
+            
             if (sort == "All") {
                 for genre in genres{
                     let gameSnaphot = try await
@@ -156,7 +158,7 @@ class FirebaseServices {
                 .collection("Games")
                 .document("Favorite")
             
-            try await ref.setData(["genreName": game.genres], merge: true)
+            try await ref.setData(["Favorite": "Favortite"], merge: true)
 
             try ref.collection("Favorite")
                    .document(game.name)
@@ -165,6 +167,33 @@ class FirebaseServices {
         } catch {
             print("Error adding game: \(error.localizedDescription)")
         }
+    }
+    
+    func isFav(_ username: String, _ game: Game) async -> Bool {
+        do {
+            guard let currentUser = await getUserByUsername(username) else {
+                print("User not found")
+                return false
+            }
+    
+            let ref =  db.collection("Users")
+                .document(currentUser.id)
+                .collection("Games")
+                .document("Favorite")
+                .collection("Favorite")
+            
+            if (try await ref.document(game.name).getDocument().exists) {
+                return true
+            }
+            else {
+                return false
+            }
+            
+                
+        } catch {
+            print("Error adding game: \(error.localizedDescription)")
+        }
+        return false
     }
     
     func removeFav(_ username: String, _ game: Game) async {
@@ -179,15 +208,45 @@ class FirebaseServices {
                 .collection("Games")
                 .document("Favorite")
             
-            try await ref.setData(["genreName": game.genres], merge: true)
 
             try await ref.collection("Favorite")
                    .document(game.name)
                    .delete()
                 
         } catch {
-            print("Error adding game: \(error.localizedDescription)")
+            print("Error removing game from favorite: \(error.localizedDescription)")
         }
     }
     
+    func removeGame(_ username: String, _ game: Game) async {
+        do {
+            guard let currentUser = await getUserByUsername(username) else {
+                print("User not found")
+                return
+            }
+            
+            await removeFav(username, game)
+    
+            let ref =  db.collection("Users")
+                .document(currentUser.id)
+                .collection("Games")
+                .document(game.genres)
+
+            try await ref.collection(game.genres)
+                   .document(game.name)
+                   .delete()
+                
+        } catch {
+            print("Error removing game: \(error.localizedDescription)")
+        }
+    }
+    
+    func logOut() async {
+        do {
+            try Auth.auth().signOut()
+           
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
 }

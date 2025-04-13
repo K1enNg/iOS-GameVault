@@ -18,6 +18,7 @@ struct LogInView: View {
     @State private var nav2 = false
     @State private var nav3 = false
     @AppStorage("currentUsername") var currentUsername: String = ""
+    @State private var toastMessage: String? = nil
     
     var body: some View {
         VStack {
@@ -26,33 +27,38 @@ struct LogInView: View {
                     .resizable()
                     .scaledToFit()
                 
-                    Text("Already a memeber?")
-                    .font(.title)
-                        .bold()
-                        .fontDesign(.monospaced)
                     Text("Log In")
                     .font(.title)
                         .bold()
                         .fontDesign(.monospaced)
+                        .foregroundColor(.gold)
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.gray.opacity(0.15))
+                    .foregroundColor(.gray.opacity(0.4))
                     .frame(width: 370, height: 60)
                     .overlay{
                         TextField("Enter your username", text: $username)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
                             .padding(.leading)
+                            .fontWeight(.bold)
+                            .onChange(of: username) {
+                                username = username.trimmingCharacters(in: .whitespaces)
+                            }
                     }
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.gray.opacity(0.15))
+                    .foregroundColor(.gray.opacity(0.4))
                     .frame(width: 370, height: 60)
                     .overlay{
                         SecureField("Enter your password", text: $password)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
                             .padding(.leading)
+                            .fontWeight(.bold)
+                            .onChange(of: password) {
+                                password = password.trimmingCharacters(in: .whitespaces)
+                            }
                     }
                 
             }.padding()
@@ -63,9 +69,10 @@ struct LogInView: View {
                     nav3 = true
                 }) {
                     Text("Forgot Password")
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(.gold)
                         .fontDesign(.monospaced)
                         .font(.subheadline)
+                        .padding(.trailing)
                 }
                 .fullScreenCover(isPresented: $nav3) {
                     ResetPassword()
@@ -81,17 +88,24 @@ struct LogInView: View {
                             Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
                                 
                                 if let error = error {
-                                    print("Error logging in: \(error.localizedDescription)")
+                                    toastMessage = "Error logging in: \(error.localizedDescription)"
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                                toastMessage = nil
+                                    }
                                     return
                                 }
-                                print("User signed in successfully!")
+                                toastMessage = "User signed in successfully!"
                                 currentUsername = username
                                 nav2 = true
                             }
                         }
                     }
                     else{
-                        print("Please fill or the fields!")
+                        toastMessage = "Please enter both username and password."
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            toastMessage = nil
+                        }
                     }
                 }
             }){
@@ -126,6 +140,7 @@ struct LogInView: View {
                     Text("Sign Up")
                         .font(.subheadline)
                         .bold()
+                        .foregroundStyle(.gold)
                         .fontDesign(.monospaced)
                 }
                 .fullScreenCover(isPresented: $nav) {
@@ -136,7 +151,8 @@ struct LogInView: View {
             Spacer()
             
         }.padding()
-            .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
+            .toast($toastMessage)
     }
         
 }

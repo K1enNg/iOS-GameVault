@@ -16,7 +16,6 @@ let model = Game(
     publishers: "Bethesda"
 )
 
-
 struct GameCollectionCard: View {
     var obj: Game
     private let firebase = FirebaseServices()
@@ -38,35 +37,22 @@ struct GameCollectionCard: View {
                     Text("Image failed to load")
                 }
                 
-                
                 VStack (alignment: .leading){
                     Text(obj.name)
                         .font(.headline)
                         .fontDesign(.monospaced)
+                        .foregroundColor(.gold)
+                    
                     Text(obj.genres)
                         .font(.subheadline)
                         .fontDesign(.monospaced)
+                        .foregroundColor(.black)
                 }
                 
                 Spacer()
-            
-                    Toggle("",isOn: $addtoFav)
-                        .labelsHidden()
-                        .toggleStyle(SwitchToggleStyle(tint: .gold))
-                        .onChange(of: addtoFav) { newValue in
-                            Task {
-                                if newValue == true{
-                                    await firebase.addFav(currentUsername, obj)
-                                }
-                                else {
-                                    newValue == false
-                                    await firebase.removeFav(currentUsername, obj)
-                                }
-                            }
-                        }
             }
         }.padding()
-        .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
     }
 }
 

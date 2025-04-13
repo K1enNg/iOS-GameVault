@@ -15,6 +15,7 @@ struct SignUp: View {
     private let firestoreService = FirebaseServices()
     @State private var nav = false
     @State private var nav2 = false
+    @State private var toastMessage: String? = nil
     
     var body: some View {
         VStack {
@@ -28,40 +29,47 @@ struct SignUp: View {
                     .bold()
                     .fontDesign(.monospaced)
                     .padding(.bottom)
+                    .foregroundColor(.gold)
             
             VStack (alignment: .leading, spacing: 20){
                 
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.gray.opacity(0.15))
+                    .foregroundColor(.gray.opacity(0.4))
                     .frame(width: 370, height: 60)
                     .overlay{
                         TextField("Enter your username", text: $username)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
                             .padding(.leading)
+                            .onChange(of: username) {
+                                username = username.trimmingCharacters(in: .whitespaces)
+                            }
                     }
                     
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.gray.opacity(0.15))
+                    .foregroundColor(.gray.opacity(0.4))
                     .frame(width: 370, height: 60)
                     .overlay{
                         SecureField("Enter your password", text: $password)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
                             .padding(.leading)
+                            .onChange(of: password) {
+                                password = password.trimmingCharacters(in: .whitespaces)
+                            }
                     }
                 
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.gray.opacity(0.15))
+                    .foregroundColor(.gray.opacity(0.4))
                     .frame(width: 370, height: 60)
                     .overlay{
                         TextField("Enter your email", text: $email)
                             .textFieldStyle(PlainTextFieldStyle())
                             .fontDesign(.monospaced)
                             .onChange (of: email){
-                                email = email.lowercased()
+                                email = email.lowercased().trimmingCharacters(in: .whitespaces)
                             }.padding(.leading)
                     }
             }
@@ -70,13 +78,23 @@ struct SignUp: View {
                 if(!username.isEmpty && !password.isEmpty && !email.isEmpty) {
                     Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                         if let error = error {
-                            print("Error signing up: \(error.localizedDescription)")
+                            toastMessage = "Error signing up: \(error.localizedDescription)"
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        toastMessage = nil
+                            }
                             return
                         }
                         guard let uid = authResult?.user.uid else { return }
                         
                         firestoreService.addUser(uid, username, email)
+                        toastMessage = "Signed Up successfully!"
                         nav2 = true
+                    }
+                }
+                else {
+                    toastMessage = "Please enter all fields!"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                toastMessage = nil
                     }
                 }
             }){
@@ -108,6 +126,7 @@ struct SignUp: View {
                 }) {
                     Text("Log In")
                         .font(.subheadline)
+                        .foregroundStyle(.gold)
                         .bold()
                         .fontDesign(.monospaced)
                 }
@@ -118,7 +137,8 @@ struct SignUp: View {
             
             Spacer()
         }.padding()
-            .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
+            .toast($toastMessage)
     }
 }
 

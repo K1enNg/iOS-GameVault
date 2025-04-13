@@ -18,6 +18,7 @@ let game = Game(
 
 
 struct GameCard: View {
+    @State private var toastMessage: String? = nil
     var obj: Game
     private let firebase = FirebaseServices()
     @AppStorage("currentUsername") var currentUsername: String = ""
@@ -41,9 +42,11 @@ struct GameCard: View {
                     Text(obj.name)
                         .font(.headline)
                         .fontDesign(.monospaced)
+                        .foregroundColor(.gold)
                     Text(obj.genres)
                         .font(.subheadline)
                         .fontDesign(.monospaced)
+                        .foregroundColor(.black)
                 }
                 
                 Spacer()
@@ -51,6 +54,11 @@ struct GameCard: View {
                 Button (action : {
                     Task {
                         await firebase.addGame(currentUsername, obj)
+                        toastMessage = "Game Added to Collection!"
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            toastMessage = nil
+                        }
                     }
                 }) {
                     RoundedRectangle(cornerRadius: 20)
@@ -65,7 +73,8 @@ struct GameCard: View {
                 }
 
             }
-            .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
+            .toast($toastMessage)
         }
     }
 }

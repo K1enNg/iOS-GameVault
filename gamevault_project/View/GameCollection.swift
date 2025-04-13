@@ -14,7 +14,6 @@ struct GameCollection: View {
     @State private var genres: [String] = []
     @State private var selectedGenre: String = "All"
     
-    
     var body: some View {
         NavigationStack {
             VStack {
@@ -23,41 +22,13 @@ struct GameCollection: View {
                     Text("GameVault")
                         .font(.title)
                         .bold(true)
-                        .foregroundColor(.black)
+                        .foregroundColor(.gold)
+                        .fontDesign(.monospaced)
+                    
                     Image(systemName: "gamecontroller")
                         .resizable()
                         .frame(width: 40, height: 30)
-                        .foregroundColor(.black)
-                    
-                    Spacer()
-                    
-                    Image(systemName: "qrcode.viewfinder")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.black)
-                }
-                
-                HStack{
-                    Spacer()
-                    
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(.gray.opacity(0.2))
-                        .frame(width: 380, height: 30)
-                        .overlay(
-                            HStack{
-                                
-                                Text("Search Collection")
-                                    .font(.body)
-                                    .multilineTextAlignment(.leading)
-                                    .foregroundColor(.gray)
-                                Spacer()
-                                Image(systemName: "magnifyingglass")
-                                    .resizable()
-                                    .foregroundColor(.gray)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 20)
-
-                            })
+                        .foregroundColor(.gold)
                 }
                 
                 HStack (){
@@ -66,6 +37,7 @@ struct GameCollection: View {
                         .font(.title)
                         .bold(true)
                         .padding(.bottom)
+                        .foregroundColor(.gold)
                     
                     Spacer()
                     Picker("Select Genre", selection: $selectedGenre) {
@@ -73,15 +45,16 @@ struct GameCollection: View {
                             Text(genre).tag(genre)
                         }
                     }
-                    .accentColor(.black)
+                    .accentColor(.gold)
                     .pickerStyle(MenuPickerStyle()) .onChange(of: selectedGenre) { _ in
-                        Task { await getAllGames() }
+                        Task { await getAllGames()}
                     }
                 }
             
             if (games.isEmpty) {
                 ProgressView("Loading games...")
                     .padding(.trailing)
+                    .foregroundColor(.gold)
             } else {
                 ScrollView{
                     ForEach(games, id: \.id) { game in
@@ -101,7 +74,8 @@ struct GameCollection: View {
         .task{
             await getAllGames()
         }
-        .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+        .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
+            
     }
 }
     

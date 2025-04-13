@@ -28,6 +28,7 @@ struct AddGame: View {
                         .font(.largeTitle)
                         .bold()
                         .fontDesign(.monospaced)
+                        .foregroundColor(.gold)
                 }
                 
                 RoundedRectangle(cornerRadius: 8)
@@ -38,7 +39,7 @@ struct AddGame: View {
                     TextField("Search Game", text: $name)
                         .textFieldStyle(PlainTextFieldStyle())
                         .padding()
-                    
+                        .foregroundColor(.gold)
                     
                     Button (action : {
                         Task {
@@ -46,15 +47,15 @@ struct AddGame: View {
                         }
                     }) {
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.black)
+                            .fill(Color.gold)
                             .frame(width: 35, height: 35)
                             .overlay {
                                 Image(systemName: "magnifyingglass")
                                     .font(.system(size: 20))
                                     .bold(true)
-                                    .foregroundStyle(.white)
+                                    .foregroundStyle(.black)
                             }
-                    }
+                    }.padding(.leading)
                 })
             }
             
@@ -71,11 +72,12 @@ struct AddGame: View {
             }
             else {
                 ProgressView("Loading results...")
+                    .foregroundColor(.gold)
             }
            
             Spacer()
         }.padding()
-            .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.black.opacity(0.2)]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
     }
     
    func fetchGames() async {

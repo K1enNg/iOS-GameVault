@@ -10,7 +10,8 @@ import FirebaseAuth
 
 struct ResetPassword: View {
     @State private var email: String = ""
-    
+    @State private var nav2 = false
+    @State private var toastMessage: String? = nil
     var body: some View {
         VStack {
             Image("gameVaultLogo")
@@ -22,12 +23,20 @@ struct ResetPassword: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .fontDesign(.monospaced)
+                    .foregroundColor(.gold)
                 
-                TextField("Enter your email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 20)
-                    .onChange (of: email){
-                        email = email.lowercased()
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.gray.opacity(0.4))
+                    .frame(width: 370, height: 60)
+                    .overlay{
+                        TextField("Enter your email", text: $email)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding()
+                            .fontDesign(.monospaced)
+                            .onChange (of: email){
+                                email = email.lowercased().trimmingCharacters(in: .whitespaces)
+                            }
                     }
             }.padding(.horizontal)
             
@@ -35,10 +44,25 @@ struct ResetPassword: View {
                 if(!email.isEmpty) {
                     Auth.auth().sendPasswordReset(withEmail: email) { error in
                         if let error = error {
-                            print("Error resetting password: \(error.localizedDescription)")
+                            toastMessage = "Error resetting password: \(error.localizedDescription)"
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        toastMessage = nil
+                            }
                             return
                         }
-                        print("Password reset request sent to " +  email)
+                        toastMessage = "Password reset request sent to " +  email
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    toastMessage = nil
+                            nav2 = true
+                        }
+                    }
+                }
+                else {
+                    toastMessage = "Please enter your email!"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                toastMessage = nil
                     }
                 }
             }){
@@ -49,15 +73,19 @@ struct ResetPassword: View {
                     .overlay {
                         HStack (alignment: .center){
                             Text("Send Link")
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.gold)
                                 .font(.title3)
                                 .fontDesign(.monospaced)
                         }
                     }
+            } .fullScreenCover(isPresented: $nav2) {
+                LogInView()
             }
             
             Spacer()
         }
+        .background(LinearGradient(gradient: Gradient(colors: [ Color.black.opacity(0.9), Color.yellow.opacity(0.9)]), startPoint: .top, endPoint: .bottom))
+        .toast($toastMessage)
     }
 }
 
