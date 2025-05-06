@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9E04746F2D84B16F00FEF47D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9E04746E2D84B16F00FEF47D /* FirebaseAuth */; };
+		9E1B258E2D7B700400BE5F03 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E1B258D2D7B700400BE5F03 /* FirebaseCore */; };
+		9E1B25902D7B700400BE5F03 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E1B258F2D7B700400BE5F03 /* FirebaseFirestore */; };
+		9EA7B67F2D9C4AFD00F308B7 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 9EA7B67E2D9C4AFD00F308B7 /* SDWebImageSwiftUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		55C389BD2D5FBF1200F6B8BE /* gamevault_project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gamevault_project.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +30,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EA7B67F2D9C4AFD00F308B7 /* SDWebImageSwiftUI in Frameworks */,
+				9E1B258E2D7B700400BE5F03 /* FirebaseCore in Frameworks */,
+				9E04746F2D84B16F00FEF47D /* FirebaseAuth in Frameworks */,
+				9E1B25902D7B700400BE5F03 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +44,7 @@
 			isa = PBXGroup;
 			children = (
 				55C389BF2D5FBF1200F6B8BE /* gamevault_project */,
+				9E04746D2D84B16F00FEF47D /* Frameworks */,
 				55C389BE2D5FBF1200F6B8BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +55,13 @@
 				55C389BD2D5FBF1200F6B8BE /* gamevault_project.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9E04746D2D84B16F00FEF47D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +84,10 @@
 			);
 			name = gamevault_project;
 			packageProductDependencies = (
+				9E1B258D2D7B700400BE5F03 /* FirebaseCore */,
+				9E1B258F2D7B700400BE5F03 /* FirebaseFirestore */,
+				9E04746E2D84B16F00FEF47D /* FirebaseAuth */,
+				9EA7B67E2D9C4AFD00F308B7 /* SDWebImageSwiftUI */,
 			);
 			productName = gamevault_project;
 			productReference = 55C389BD2D5FBF1200F6B8BE /* gamevault_project.app */;
@@ -94,6 +117,10 @@
 			);
 			mainGroup = 55C389B42D5FBF1200F6B8BE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9EA7B67D2D9C4AFD00F308B7 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 55C389BE2D5FBF1200F6B8BE /* Products */;
 			projectDirPath = "";
@@ -252,6 +279,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"gamevault_project/Preview Content\"";
+				DEVELOPMENT_TEAM = RV96M429T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -280,6 +308,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"gamevault_project/Preview Content\"";
+				DEVELOPMENT_TEAM = RV96M429T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -322,6 +351,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.9.0;
+			};
+		};
+		9EA7B67D2D9C4AFD00F308B7 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9E04746E2D84B16F00FEF47D /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		9E1B258D2D7B700400BE5F03 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		9E1B258F2D7B700400BE5F03 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E1B258C2D7B700400BE5F03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9EA7B67E2D9C4AFD00F308B7 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9EA7B67D2D9C4AFD00F308B7 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 55C389B52D5FBF1200F6B8BE /* Project object */;
 }
